@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.gradle.publish:plugin-publish-plugin:0.9.10"
+        classpath "gradle.plugin.com.palantir.gradle.gitversion:gradle-git-version:0.5.3"
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: "com.gradle.plugin-publish"
+apply plugin: 'com.palantir.git-version'
+
+group = 'eu.emundo'
+description = "Gradle Plugin for Octane Model Generator"
+version = gitVersion()
+
+println ''
+println '###############################################'
+println '#'
+println "# ${description} $version"
+println '#'
+println '###############################################'
+println ''
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+
+    compile group: 'com.hpe.adm.nga.sdk', name: 'sdk-generate-entity-models-maven-plugin', version: '12.60.16'
+}
+
+pluginBundle {
+    website = 'https://github.com/emundo/octane-gradle-plugin'
+    vcsUrl = 'https://github.com/emundo/octane-gradle-plugin.git'
+
+    plugins {
+        generateModelsPlugin {
+            tags = ['octane', 'alm', 'models', 'entity', 'generator']
+            description = 'Gradle Plugin for Octane Model Generator.'
+            id = 'eu.emundo.gradle.octane'
+            displayName = 'Gradle Octane Model Generator plugin'
+        }
+    }
+}
