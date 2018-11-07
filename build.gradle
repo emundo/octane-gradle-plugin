@@ -11,7 +11,7 @@ buildscript {
 }
 
 apply plugin: 'groovy'
-apply plugin: "com.gradle.plugin-publish"
+apply plugin: 'com.gradle.plugin-publish'
 apply plugin: 'com.palantir.git-version'
 
 group = 'eu.emundo'
