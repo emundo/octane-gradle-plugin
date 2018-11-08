@@ -4,7 +4,7 @@ A Gradle Plugin providing a task to generate entity models out from ALM Octane i
 
 ## Entity Generation
 
-You can generate entities based on your server's metadata using the `eu.emundo.gradle.octane` plugin.
+You can generate entities based on your server's metadata using the `eu.emundo.octane` plugin.
 This plugin connects to your ALM Octane server using the given authentication credentials, shared space and work space
 and generates strongly typed entities that can be used instead of the generic out of the box entity that comes
 with the SDK1.
@@ -14,7 +14,7 @@ For more see [MicroFocus/ALMOctaneJavaRESTSDK](https://github.com/MicroFocus/ALM
 ## Getting Started
 
 ```groovy
-apply plugin: "eu.emundo.gradle.octane"
+apply plugin: "eu.emundo.octane"
 
 octane {
     generatedSourcesDirectory = file("$buildDir/generated-sources/")
