@@ -1,0 +1,18 @@
+# Beschreibt wie unsere CI/CD Pipeline mit der Gitlab-CI funktioniert
+#
+# Referenz: https://docs.gitlab.com/ce/ci/yaml/
+# Linter: https://gitlab.emundo.eu/ci/lint
+# Doku: https://gitlab.emundo.eu/help/ci/README.md
+#
+# Author: Robert Schreib
+
+image: emundo/docker-compose-openjdk-node-gradle:openjdk-8-gradle-5.1
+
+stages:
+  - build
+  - publish
+
+assemble:
+  stage: build
+  script:
+    - gradle assemble
