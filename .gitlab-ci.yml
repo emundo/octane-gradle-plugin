@@ -8,6 +8,12 @@
 
 image: emundo/docker-compose-openjdk-node-gradle:openjdk-8-gradle-5.1
 
+variables:
+  # Deaktiviere den Gradle Daemon: https://docs.gradle.org/current/userguide/gradle_daemon.html#sec:why_the_daemon
+  # Verwende nicht GRADLE_OPTS sondern JAVA_OPTS, sonst wird die JVM nicht mit den Settings gestartet
+  JAVA_OPTS: "-Xmx4096m -Dorg.gradle.daemon=false -Dorg.gradle.caching=false"
+
+
 stages:
   - build
   - publish
