@@ -6,7 +6,7 @@
 #
 # Author: Robert Schreib
 
-image: emundo/docker-compose-openjdk-node-gradle:openjdk-8-gradle-5.1
+image: emundo/docker-compose-openjdk-node-gradle:openjdk-8-gradle-5.2
 
 variables:
   # Deaktiviere den Gradle Daemon: https://docs.gradle.org/current/userguide/gradle_daemon.html#sec:why_the_daemon

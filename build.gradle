@@ -5,8 +5,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.gradle.publish:plugin-publish-plugin:0.9.10"
-        classpath "gradle.plugin.com.palantir.gradle.gitversion:gradle-git-version:0.5.3"
+        classpath "com.gradle.publish:plugin-publish-plugin:0.10.1"
+        classpath "gradle.plugin.com.palantir.gradle.gitversion:gradle-git-version:0.11.0"
     }
 }
 
@@ -30,11 +30,18 @@ repositories {
     jcenter()
 }
 
+def sdkVersion = "12.60.16"
+
+if (project.hasProperty("octaneSdkVersion")) {
+    sdkVersion = octaneSdkVersion
+}
+
+
 dependencies {
     compile gradleApi()
     compile localGroovy()
 
-    compile group: 'com.hpe.adm.nga.sdk', name: 'sdk-generate-entity-models-maven-plugin', version: '12.60.16'
+    compile group: 'com.hpe.adm.nga.sdk', name: 'sdk-generate-entity-models-maven-plugin', version: "$sdkVersion"
 }
 
 pluginBundle {
