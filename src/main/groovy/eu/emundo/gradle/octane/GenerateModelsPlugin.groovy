@@ -20,7 +20,8 @@ class GenerateModelsPlugin implements Plugin<Project> {
                 try {
                     println("Starting to generate entities")
                     new GenerateModels(extension.generatedSourcesDirectory)
-                            .generate(extension.clientId, extension.clientSecret, extension.server, extension.sharedSpace, extension.workSpace)
+                            .generate(extension.clientId, extension.clientSecret, extension.server, extension.sharedSpace, extension.workSpace,
+                    true)
                 } catch (IOException e) {
                     throw new InvalidUserDataException("Problem generating entities", e)
                 } catch (OctaneException e) {
