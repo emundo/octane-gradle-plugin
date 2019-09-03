@@ -28,6 +28,15 @@ println '###############################################'
 println ''
 
 repositories {
+    if (project.hasProperty("mavenRepository")) {
+        maven {
+            url "$mavenRepository"
+            credentials {
+                username "$mavenUsername"
+                password "$mavenPassword"
+            }
+        }
+    }
     jcenter()
     mavenLocal()
 }
@@ -36,6 +45,7 @@ def sdkVersion = "12.60.16"
 
 if (project.hasProperty("octaneSdkVersion")) {
     sdkVersion = octaneSdkVersion
+    logger.info("sdkVersion: $octaneSdkVersion")
 }
 
 
