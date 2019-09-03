@@ -1,4 +1,4 @@
-package eu.emundo.gradle.octane
+package eu.emundo.gradle.octane.generator
 
 import com.hpe.adm.nga.sdk.exception.OctaneException
 import com.hpe.adm.nga.sdk.generate.GenerateModels

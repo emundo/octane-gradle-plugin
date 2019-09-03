@@ -14,7 +14,9 @@ For more see [MicroFocus/ALMOctaneJavaRESTSDK](https://github.com/MicroFocus/ALM
 ## Getting Started
 
 ```groovy
-apply plugin: "eu.emundo.octane"
+plugins {
+    id "eu.emundo.octane.generator" version "1.3.5"
+}
 
 octane {
     generatedSourcesDirectory = file("$buildDir/generated-sources/")

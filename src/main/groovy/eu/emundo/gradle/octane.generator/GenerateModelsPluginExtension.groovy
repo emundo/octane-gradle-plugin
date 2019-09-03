@@ -1,4 +1,4 @@
-package eu.emundo.gradle.octane
+package eu.emundo.gradle.octane.generator
 
 import org.gradle.api.tasks.OutputDirectory
 
