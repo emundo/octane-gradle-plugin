@@ -56,7 +56,7 @@ pluginBundle {
         generateModelsPlugin {
             tags = ['octane', 'alm', 'models', 'entity', 'generator']
             description = 'Gradle Plugin for Octane Model Generator.'
-            id = 'eu.emundo.octane'
+            id = 'eu.emundo.octane.generator'
             displayName = 'Gradle Octane Model Generator plugin'
         }
     }
