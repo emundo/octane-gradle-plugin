@@ -45,7 +45,7 @@ dependencies {
     compile gradleApi()
     compile localGroovy()
 
-    compile group: 'com.microfocus.adm.octane.sdk', name: 'sdk-generate-entity-models-maven-plugin', version: "$sdkVersion"
+    compile group: 'com.microfocus.adm.almoctane.sdk', name: 'sdk-generate-entity-models-maven-plugin', version: "$sdkVersion"
 }
 
 pluginBundle {
