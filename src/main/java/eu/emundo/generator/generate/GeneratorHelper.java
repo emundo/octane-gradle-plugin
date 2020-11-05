@@ -293,8 +293,6 @@ public final class GeneratorHelper {
 	/**
 	 * Replaces accented characters in a String by unaccented equivalents.
 	 *
-	 * @see <a href=
-	 *      "https://www.mail-archive.com/java-user@lucene.apache.org/msg23562.html">msg23562</a>
 	 * @param input
 	 *            String
 	 * @return cleaned String
