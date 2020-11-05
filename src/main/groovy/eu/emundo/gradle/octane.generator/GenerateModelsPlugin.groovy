@@ -14,7 +14,6 @@ class GenerateModelsPlugin implements Plugin<Project> {
     void apply(final Project project) {
         project.task("generateModels") {
             group = 'octane'
-
             def extension = project.extensions.create("octane", GenerateModelsPluginExtension)
             doLast {
                 try {
