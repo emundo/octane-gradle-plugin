@@ -1,7 +1,7 @@
 package eu.emundo.gradle.octane.generator
 
 import com.hpe.adm.nga.sdk.exception.OctaneException
-import com.hpe.adm.nga.sdk.generate.GenerateModels
+import eu.emundo.generator.generate.GenerateModels
 import org.gradle.api.GradleScriptException
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Plugin
@@ -21,7 +21,7 @@ class GenerateModelsPlugin implements Plugin<Project> {
                     println("Starting to generate entities")
                     new GenerateModels(extension.generatedSourcesDirectory)
                             .generate(extension.clientId, extension.clientSecret, extension.server, extension.sharedSpace, extension.workSpace,
-                    true)
+                                    extension.doNotValidateCertificate, extension.techPreview)
                 } catch (IOException e) {
                     throw new InvalidUserDataException("Problem generating entities", e)
                 } catch (OctaneException e) {

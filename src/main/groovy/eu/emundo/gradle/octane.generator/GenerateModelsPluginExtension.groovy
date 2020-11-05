@@ -10,4 +10,6 @@ class GenerateModelsPluginExtension {
     String server
     long sharedSpace
     long workSpace
+    boolean doNotValidateCertificate
+    boolean techPreview
 }
