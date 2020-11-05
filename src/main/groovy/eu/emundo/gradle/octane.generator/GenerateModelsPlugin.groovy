@@ -18,7 +18,7 @@ class GenerateModelsPlugin implements Plugin<Project> {
             doLast {
                 try {
                     println("Starting to generate entities")
-                    new GenerateModels(extension.generatedSourcesDirectory)
+                    new GenerateModels(extension.generatedSourcesDirectory, extension.ignoreListIds)
                             .generate(extension.clientId, extension.clientSecret, extension.server, extension.sharedSpace, extension.workSpace,
                                     extension.doNotValidateCertificate, extension.techPreview)
                 } catch (IOException e) {

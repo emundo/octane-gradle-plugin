@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -65,6 +67,7 @@ public class GenerateModels {
 
 	private final Template template, interfaceTemplate, entityListTemplate, phasesTemplate, listTemplate;
 	private final File modelDirectory, entitiesDirectory, enumsDirectory, listsDirectory;
+	private final List<String> ignoredListIds;
 
 	/**
 	 * Initialise the class with the output directory. This should normally be
@@ -73,7 +76,12 @@ public class GenerateModels {
 	 * @param outputDirectory
 	 *            Where all the generated files will be placed
 	 */
-	public GenerateModels(final File outputDirectory) {
+	public GenerateModels(final File outputDirectory, final String ignoredListIds) {
+		if (StringUtils.isNotBlank(ignoredListIds)) {
+			this.ignoredListIds = Arrays.asList(StringUtils.split(ignoredListIds, ","));
+		} else {
+			this.ignoredListIds = null;
+		}
 		final File packageDirectory = new File(outputDirectory, "/com/hpe/adm/nga/sdk");
 		modelDirectory = new File(packageDirectory, "model");
 		modelDirectory.mkdirs();
@@ -152,6 +160,10 @@ public class GenerateModels {
 		octane.signOut();
 	}
 
+	private boolean listShouldNotBeGenerated(final String id) {
+		return this.ignoredListIds != null && this.ignoredListIds.contains(id);
+	}
+
 	/**
 	 * There are a few fields that cannot be generated due to inconsistencies.
 	 * These could have special cases but it is simpler to exclude them from
@@ -210,7 +222,12 @@ public class GenerateModels {
 				.execute();
 
 		final List<EntityModel> listNodes = new ArrayList<>();
-		rootNodes.forEach(rootNode -> {
+		final List<EntityModel> rootNodesToRemove = new ArrayList<>();
+		for (EntityModel rootNode : rootNodes) {
+			if (listShouldNotBeGenerated(rootNode.getId())) {
+				rootNodesToRemove.add(rootNode);
+				continue;
+			}
 			final OctaneCollection<EntityModel> models = octane.entityList("list_nodes")
 					.get()
 					.addFields("name", "list_root", "id", "logical_name", "activity_level")
@@ -219,7 +236,8 @@ public class GenerateModels {
 							.build())
 					.execute();
 			listNodes.addAll(models);
-		});
+		}
+		rootNodes.removeAll(rootNodesToRemove);
 
 		final Map<String, List<String[]>> mappedListNodes = new HashMap<>();
 		final Map<String, String> logicalNameToNameMap = new HashMap<>();
@@ -274,6 +292,7 @@ public class GenerateModels {
 		mappedListNodes.values().forEach(strings -> sortedMappedListNodes.put(strings.get(0)[0], strings));
 
 		for (final Map.Entry<String, List<String[]>> sortedMappedListEntry : sortedMappedListNodes.entrySet()) {
+			final String listId = sortedMappedListEntry.getValue().get(0)[1];
 			System.out.println("Create list class: " + sortedMappedListEntry.getKey());
 			final VelocityContext velocityContext = new VelocityContext();
 			velocityContext.put("listItems", sortedMappedListEntry.getValue());

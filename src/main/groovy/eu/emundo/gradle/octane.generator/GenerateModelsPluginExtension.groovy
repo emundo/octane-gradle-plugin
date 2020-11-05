@@ -12,4 +12,5 @@ class GenerateModelsPluginExtension {
     long workSpace
     boolean doNotValidateCertificate
     boolean techPreview
+    String ignoreListIds
 }
