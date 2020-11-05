@@ -63,7 +63,7 @@ import eu.emundo.generator.octane.GoogleHttpClientWrapper;
  */
 public class GenerateModels {
 
-	private final Template template, interfaceTemplate, entityListTemplate, phasesTemplate, listsTemplate, listTemplate;
+	private final Template template, interfaceTemplate, entityListTemplate, phasesTemplate, listTemplate;
 	private final File modelDirectory, entitiesDirectory, enumsDirectory, listsDirectory;
 
 	/**
@@ -95,7 +95,6 @@ public class GenerateModels {
 		interfaceTemplate = velocityEngine.getTemplate("/Entity.vm");
 		entityListTemplate = velocityEngine.getTemplate("/TypedEntityList.vm");
 		phasesTemplate = velocityEngine.getTemplate("/Phases.vm");
-		listsTemplate = velocityEngine.getTemplate("/Lists.vm");
 		listTemplate = velocityEngine.getTemplate("/List.vm");
 	}
 
@@ -341,7 +340,7 @@ public class GenerateModels {
 						if ((!entityMetadatum.getName().equals("list_node"))
 								&& (fieldMetadata1.getFieldTypedata().getTargets()[0].getType().equals("list_node"))) {
 							final String listName = logicalNameToListsMap.get(fieldMetadata1.getFieldTypedata().getTargets()[0].logicalName());
-							references.add("com.hpe.adm.nga.sdk.enums.Lists." + listName);
+							references.add("com.hpe.adm.nga.sdk.enums.lists." + listName);
 						} else {
 							final GeneratorHelper.ReferenceMetadata referenceMetadata = GeneratorHelper.getAllowedSuperTypesForReference(fieldMetadata1,
 									entityMetadata);
