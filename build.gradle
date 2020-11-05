@@ -1,11 +1,13 @@
 plugins {
     id "com.palantir.git-version" version "0.11.0"
     id "com.gradle.plugin-publish" version "0.10.1"
+    id "com.diffplug.spotless" version "5.7.0"
 }
 
 apply plugin: 'groovy'
 apply plugin: "com.gradle.plugin-publish"
 apply plugin: 'com.palantir.git-version'
+apply plugin: 'com.diffplug.spotless'
 
 group = 'eu.emundo'
 description = "Gradle Plugin for Octane Model Generator"
@@ -33,7 +35,7 @@ repositories {
     mavenLocal()
 }
 
-def sdkVersion = "12.60.16"
+def sdkVersion = "15.1.20"
 
 if (project.hasProperty("octaneSdkVersion")) {
     sdkVersion = octaneSdkVersion
@@ -45,7 +47,8 @@ dependencies {
     compile gradleApi()
     compile localGroovy()
 
-    compile group: 'com.microfocus.adm.almoctane.sdk', name: 'sdk-generate-entity-models-maven-plugin', version: "$sdkVersion"
+    compile group: 'com.microfocus.adm.almoctane.sdk', name: 'sdk-src', version: "$sdkVersion"
+    compile group: 'org.apache.velocity', name: 'velocity', version: '1.7'
 }
 
 pluginBundle {
@@ -59,5 +62,25 @@ pluginBundle {
             id = 'eu.emundo.octane.generator'
             displayName = 'Gradle Octane Model Generator plugin'
         }
+    }
+}
+
+// Formatting
+spotless {
+    java {
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        importOrderFile "${project.rootDir}/importorder.properties"
+        eclipse('4.8.0').configFile "${project.rootDir}/eclipse-formatter.xml"
+    }
+    format 'misc', {
+        target project.fileTree(project.rootDir) {
+            include '**/*.gradle', '**/.gitignore', '*.yml', '**/*.xml'
+            exclude '**/.idea/*'
+        }
+
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
     }
 }
