@@ -1,0 +1,57 @@
+package com.hpe.adm.nga.sdk.enums;
+
+import java.util.Arrays;
+
+import javax.annotation.Generated;
+
+import com.hpe.adm.nga.sdk.model.EntityModel;
+import com.hpe.adm.nga.sdk.model.StringFieldModel;
+
+/**
+ * Generated class - do not edit!
+ */
+@Generated("sdk-generate-entity-models-maven-plugin")
+public final class Phases {
+
+#foreach($phase in ${phaseMap.entrySet()})
+    #set($phaseType = $phase.getKey())
+
+    /**
+     * Phases for "$phase.getValue().get(0)[3]" entity
+     */
+    public enum ${phaseType}Phase {
+        #foreach($phaseValue in $phase.getValue())
+        /**
+         * ${phaseValue[2]}
+         */
+        ${phaseValue[1]}("${phaseValue[0]}")#if($foreach.hasNext),#else;#end
+        #end
+
+        private final String id;
+
+        ${phaseType}Phase(final String id) {
+            this.id = id;
+        }
+
+        public final String getId() {
+            return id;
+        }
+
+        public static ${phaseType}Phase getPhaseFromId(String id) {
+            return Arrays.stream(${phaseType}Phase.values()).filter(phase -> phase.id.equals(id)).findFirst().orElse(null);
+        }
+
+        public final EntityModel getAsEntityModel() {
+            final EntityModel entityModel = new EntityModel();
+            entityModel.setValue(new StringFieldModel("id", id));
+            entityModel.setValue(new StringFieldModel("type", "phase"));
+            return entityModel;
+        }
+
+        public static ${phaseType}Phase getFromEntityModel(final EntityModel entityModel) {
+            return ${phaseType}Phase.getPhaseFromId(entityModel.getId());
+        }
+    }
+
+#end
+}
