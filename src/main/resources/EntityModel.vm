@@ -98,38 +98,46 @@ public com.hpe.adm.nga.sdk.enums.Phases.${className}Phase getPhase() {
 
 #macro (getSingleListNode $field $listName)
 public com.hpe.adm.nga.sdk.enums.lists.${listName} get${GeneratorHelper.camelCaseFieldName(${field.name})}() {
-    final ReferenceFieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = (ReferenceFieldModel) wrappedEntityModel.getValue("${field.name}");
-    if (${GeneratorHelper.getSanitisedFieldName(${field.name})} == null || ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue() == null) {
-        return null;
+    final FieldModel<?> wrappedFieldModel = wrappedEntityModel.getValue("${field.name}");
+    if (wrappedFieldModel != null && wrappedFieldModel instanceof ReferenceFieldModel) {
+        final ReferenceFieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = (ReferenceFieldModel) wrappedFieldModel;
+        if (${GeneratorHelper.getSanitisedFieldName(${field.name})} != null && ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue() != null) {
+            return com.hpe.adm.nga.sdk.enums.lists.${listName}.getFromEntityModel(${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue());
+        }
     }
-    final EntityModel referenceFieldModel = ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue();
-    return com.hpe.adm.nga.sdk.enums.lists.${listName}.getFromEntityModel(referenceFieldModel);
-
+    return null;
 #end
 
 #macro (getMultiListNode $field $listName)
 public java.util.Collection<com.hpe.adm.nga.sdk.enums.lists.${listName}> get${GeneratorHelper.camelCaseFieldName(${field.name})}() {
-    final MultiReferenceFieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = (MultiReferenceFieldModel) wrappedEntityModel.getValue("${field.name}");
-    if (${GeneratorHelper.getSanitisedFieldName(${field.name})} == null || ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue() == null) {
-        return java.util.Collections.emptyList();
+    final FieldModel<?> wrappedFieldModel = wrappedEntityModel.getValue("${field.name}");
+    if (wrappedFieldModel != null && wrappedFieldModel instanceof MultiReferenceFieldModel) {
+        final MultiReferenceFieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = (MultiReferenceFieldModel) wrappedFieldModel;
+        if (${GeneratorHelper.getSanitisedFieldName(${field.name})} != null && ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue() != null) {
+            final java.util.Collection<EntityModel> value = ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue();
+            return value.stream().map(com.hpe.adm.nga.sdk.enums.lists.${listName}::getFromEntityModel)
+                .collect(java.util.stream.Collectors.toList());
+        }
     }
-	final java.util.Collection<EntityModel> value = ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue();
-	return value.stream().map(com.hpe.adm.nga.sdk.enums.lists.${listName}::getFromEntityModel)
-	    .collect(java.util.stream.Collectors.toList());
-
+    return java.util.Collections.emptyList();
 #end
 
 #macro (getNonReference $field)
 public ${GeneratorHelper.getFieldTypeAsJava(${field.getFieldType()})} get${GeneratorHelper.camelCaseFieldName(${field.name})}(){
-	    final FieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = wrappedEntityModel.getValue("${field.name}");
-	    return ${GeneratorHelper.getSanitisedFieldName(${field.name})} == null ? null : (${GeneratorHelper.getFieldTypeAsJava(${field.getFieldType()})}) ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue();
+        final FieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = wrappedEntityModel.getValue("${field.name}");
+        return ${GeneratorHelper.getSanitisedFieldName(${field.name})} == null ? null : (${GeneratorHelper.getFieldTypeAsJava(${field.getFieldType()})}) ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue();
 	}
 #end
 
 #macro (getSingleReference $field $referenceMetadata)
 #multipleReferenceAnnotations (${referenceMetadata})
 public ${referenceMetadata.getReferenceClassForSignature()} get${GeneratorHelper.camelCaseFieldName(${field.name})}(){
-    final ReferenceFieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = (ReferenceFieldModel) wrappedEntityModel.getValue("${field.name}");
+        final FieldModel<?> wrappedFieldModel = wrappedEntityModel.getValue("${field.name}");
+        if (wrappedFieldModel == null || !(wrappedFieldModel instanceof ReferenceFieldModel)) {
+            return null;
+        }
+
+        final ReferenceFieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = (ReferenceFieldModel) wrappedFieldModel;
 		if (${GeneratorHelper.getSanitisedFieldName(${field.name})} == null || ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue() == null) {
             return null;
 		}
@@ -149,7 +157,12 @@ final StringFieldModel type = (StringFieldModel) referenceFieldModel.getValue("t
 #macro (getMultipleReference $field $referenceMetadata)
 #multipleReferenceAnnotations (${referenceMetadata})
 public ${referenceMetadata.getReferenceClassForSignature()} get${GeneratorHelper.camelCaseFieldName(${field.name})}(){
-        final MultiReferenceFieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = (MultiReferenceFieldModel) wrappedEntityModel.getValue("${field.name}");
+        final FieldModel<?> wrappedFieldModel = wrappedEntityModel.getValue("${field.name}");
+        if (wrappedFieldModel == null || !(wrappedFieldModel instanceof MultiReferenceFieldModel)) {
+            return java.util.Collections.emptyList();
+        }
+
+        final MultiReferenceFieldModel ${GeneratorHelper.getSanitisedFieldName(${field.name})} = (MultiReferenceFieldModel) wrappedFieldModel;
         if (${GeneratorHelper.getSanitisedFieldName(${field.name})} == null || ${GeneratorHelper.getSanitisedFieldName(${field.name})}.getValue() == null) {
             return java.util.Collections.emptyList();
         }

@@ -75,6 +75,9 @@ public class GenerateModels {
 	 *
 	 * @param outputDirectory
 	 *            Where all the generated files will be placed
+	 * @param ignoredListIds
+	 *            Comma separated list with list_node ids, which schould be
+	 *            ignored during lists generation
 	 */
 	public GenerateModels(final File outputDirectory, final String ignoredListIds) {
 		if (StringUtils.isNotBlank(ignoredListIds)) {
