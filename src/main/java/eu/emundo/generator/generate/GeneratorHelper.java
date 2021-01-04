@@ -207,6 +207,15 @@ public final class GeneratorHelper {
 			}
 		}
 
+		// HACK: for mutlriple references declared, but only one is available in
+		// the Octane DB?! cache?
+		if (fieldTypedata.isMultiple() && referenceMetadata.referenceTypes.size() == 1 && referenceMetadata.hasTypedReturn()
+				&& referenceMetadata.hasNonTypedReturn()) {
+			System.out.println("Apply HACK in entity '" + fieldMetadata.getEntityName() + "' for multi-referenced field '" + fieldMetadata.getName() + "'");
+			referenceMetadata.hasNonTypedReturn = false;
+			referenceMetadata.referenceClassForSignature = getReferenceSignature(fieldTypedata.isMultiple(), referenceMetadata.hasTypedReturn, "Entity");
+		}
+
 		return referenceMetadata;
 	}
 
