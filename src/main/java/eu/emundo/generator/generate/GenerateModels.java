@@ -297,8 +297,17 @@ public class GenerateModels {
 		for (final Map.Entry<String, List<String[]>> sortedMappedListEntry : sortedMappedListNodes.entrySet()) {
 			final String listId = sortedMappedListEntry.getValue().get(0)[1];
 			System.out.println("Create list class: " + sortedMappedListEntry.getKey());
+			final List<String> deprecatedEnums = sortedMappedListEntry.getValue()
+					.stream()
+					.skip(1) // skip root first
+					.filter(enums -> "1".equals(enums[3])) // filter all
+					// deprecated list
+					// entries
+					.map(list -> list[0])
+					.collect(Collectors.toList());
 			final VelocityContext velocityContext = new VelocityContext();
 			velocityContext.put("listItems", sortedMappedListEntry.getValue());
+			velocityContext.put("deprecatedItems", deprecatedEnums);
 			final FileWriter fileWriter = new FileWriter(new File(listsDirectory, sortedMappedListEntry.getKey() + ".java"));
 			listTemplate.merge(velocityContext, fileWriter);
 			fileWriter.close();

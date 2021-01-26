@@ -79,4 +79,17 @@ public enum $rootModelName {
     public static $rootModelName getFromEntityModel(final EntityModel entityModel) {
         return ${rootModelName}.getListNodeFromId(entityModel.getId());
     }
+
+    public static java.util.List<$rootModelName> getDeprecatedListNodes() {
+        #if($deprecatedItems.size() > 0)
+        return Arrays.asList(
+        #foreach($deprecatedItem in $deprecatedItems)
+            ${deprecatedItem}#if($foreach.hasNext),#end
+
+        #end
+        );
+        #else
+        return java.util.Collections.emptyList();
+        #end
+    }
 }
