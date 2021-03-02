@@ -15,6 +15,9 @@ import javax.annotation.Generated;
 @EntityMetadata(url = "${entityMetadataWrapper.getUrl()}", availableMethods = {#foreach(${availableMethod} in ${entityMetadataWrapper.getAvailableMethods()})EntityMetadata.AvailableMethods.${availableMethod}, #end} )
 public class ${className}EntityModel extends TypedEntityModel implements ${interfaceName} {
 
+    public static final String ENTITY_URL = "${entityMetadataWrapper.getUrl()}";
+    public static final String ENTITY_TYPE = "${entityMetadata.name}";
+
     public ${className}EntityModel() {
         super();
         wrappedEntityModel.setValue(new StringFieldModel("type", "${entityMetadata.name}"));
