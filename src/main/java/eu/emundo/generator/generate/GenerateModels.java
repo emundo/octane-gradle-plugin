@@ -134,14 +134,14 @@ public class GenerateModels {
 	public void generate(final String clientId, final String clientSecret, final String server, final long sharedSpace, final long workSpace,
 			final boolean doNotValidateCertificate, final boolean techPreview) throws IOException, GeneralSecurityException {
 		// work around for work_items_root
-		final Octane octanePrivate = new Octane.Builder(new SimpleClientAuthentication(clientId, clientSecret, APIMode.TechnicalPreviewAPIMode),
+		final Octane octanePrivate = new Octane.Builder(new SimpleClientAuthentication(clientId, clientSecret, GeneratorHelper.TECHNICAL_PREVIEW_APIMODE),
 				doNotValidateCertificate ? new GoogleHttpClientWrapper(server) : null).sharedSpace(sharedSpace).workSpace(workSpace).Server(server).build();
 		final EntityMetadata work_items_root = octanePrivate.metadata().entities("work_item_root").execute().iterator().next();
 		final Collection<FieldMetadata> work_items_rootFields = octanePrivate.metadata().fields("work_item_root").execute();
 
 		octanePrivate.signOut();
 
-		final Octane octane = new Octane.Builder(new SimpleClientAuthentication(clientId, clientSecret, techPreview ? APIMode.TechnicalPreviewAPIMode : null),
+		final Octane octane = new Octane.Builder(new SimpleClientAuthentication(clientId, clientSecret, techPreview ? GeneratorHelper.TECHNICAL_PREVIEW_APIMODE : null),
 				doNotValidateCertificate ? new GoogleHttpClientWrapper(server) : null).sharedSpace(sharedSpace).workSpace(workSpace).Server(server).build();
 		final Metadata metadata = octane.metadata();
 		final Collection<EntityMetadata> entityMetadata = metadata.entities().execute();
@@ -185,6 +185,12 @@ public class GenerateModels {
 		 * the entity will be ignored
 		 */
 		if (name.equals("run_history")) {
+			return true;
+		}
+		if (name.equals("history_log")) {
+			return true;
+		}
+		if (name.equals("audit")) {
 			return true;
 		}
 

@@ -1,5 +1,6 @@
 package eu.emundo.generator.generate;
 
+import com.hpe.adm.nga.sdk.APIMode;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -451,4 +452,16 @@ public final class GeneratorHelper {
 		}
 		return input;
 	}
+
+	public static APIMode TECHNICAL_PREVIEW_APIMODE = new APIMode() {
+		@Override
+		public String getHeaderValue() {
+			return "true";
+		}
+
+		@Override
+		public String getHeaderKey() {
+			return "ALM-OCTANE-TECH-PREVIEW";
+		}
+	};
 }
