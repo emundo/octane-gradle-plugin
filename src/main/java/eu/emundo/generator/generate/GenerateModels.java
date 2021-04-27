@@ -24,6 +24,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import com.hpe.adm.nga.sdk.Octane;
+import com.hpe.adm.nga.sdk.Octane.OctaneCustomSettings;
 import com.hpe.adm.nga.sdk.authentication.SimpleClientAuthentication;
 import com.hpe.adm.nga.sdk.entities.OctaneCollection;
 import com.hpe.adm.nga.sdk.metadata.EntityMetadata;
@@ -131,8 +132,8 @@ public class GenerateModels {
 	public void generate(final String clientId, final String clientSecret, final String server, final long sharedSpace, final long workSpace,
 			final boolean doNotValidateCertificate, final boolean techPreview) throws IOException, GeneralSecurityException {
 		// work around for work_items_root
-		final Octane.OctaneCustomSettings octaneCustomSettings = new Octane.OctaneCustomSettings();
-		octaneCustomSettings.set(Octane.OctaneCustomSettings.Setting.TRUST_ALL_CERTS, doNotValidateCertificate);
+		final OctaneCustomSettings octaneCustomSettings = new OctaneCustomSettings();
+		octaneCustomSettings.set(OctaneCustomSettings.Setting.TRUST_ALL_CERTS, doNotValidateCertificate);
 		final Octane octanePrivate = new Octane.Builder(new SimpleClientAuthentication(clientId, clientSecret, GeneratorHelper.TECHNICAL_PREVIEW_APIMODE), null)
 				.sharedSpace(sharedSpace)
 				.workSpace(workSpace)
