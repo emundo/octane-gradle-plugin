@@ -32,6 +32,7 @@ repositories {
         }
     }
     jcenter()
+    mavenCentral()
     mavenLocal()
 }
 
