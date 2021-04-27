@@ -23,7 +23,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
-import com.hpe.adm.nga.sdk.APIMode;
 import com.hpe.adm.nga.sdk.Octane;
 import com.hpe.adm.nga.sdk.authentication.SimpleClientAuthentication;
 import com.hpe.adm.nga.sdk.entities.OctaneCollection;
@@ -141,7 +140,8 @@ public class GenerateModels {
 
 		octanePrivate.signOut();
 
-		final Octane octane = new Octane.Builder(new SimpleClientAuthentication(clientId, clientSecret, techPreview ? GeneratorHelper.TECHNICAL_PREVIEW_APIMODE : null),
+		final Octane octane = new Octane.Builder(
+				new SimpleClientAuthentication(clientId, clientSecret, techPreview ? GeneratorHelper.TECHNICAL_PREVIEW_APIMODE : null),
 				doNotValidateCertificate ? new GoogleHttpClientWrapper(server) : null).sharedSpace(sharedSpace).workSpace(workSpace).Server(server).build();
 		final Metadata metadata = octane.metadata();
 		final Collection<EntityMetadata> entityMetadata = metadata.entities().execute();
@@ -265,7 +265,7 @@ public class GenerateModels {
 					.add(new String[] { //
 							getEntityModelName(listNode), //
 							((StringFieldModel) listNode.getValue("id")).getValue(), //
-							((StringFieldModel) listNode.getValue("name")).getValue(), //
+							((StringFieldModel) listNode.getValue("name")).getValue().replace("\\", "\\\\"), //
 							((LongFieldModel) listNode.getValue("activity_level")).getValue().toString() });
 
 		});
