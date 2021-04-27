@@ -39,8 +39,6 @@ import com.hpe.adm.nga.sdk.model.StringFieldModel;
 import com.hpe.adm.nga.sdk.query.Query;
 import com.hpe.adm.nga.sdk.query.QueryMethod;
 
-import eu.emundo.generator.octane.GoogleHttpClientWrapper;
-
 /**
  * <p>
  * The class that generates entities based on the metadata from the given ALM
@@ -133,16 +131,26 @@ public class GenerateModels {
 	public void generate(final String clientId, final String clientSecret, final String server, final long sharedSpace, final long workSpace,
 			final boolean doNotValidateCertificate, final boolean techPreview) throws IOException, GeneralSecurityException {
 		// work around for work_items_root
-		final Octane octanePrivate = new Octane.Builder(new SimpleClientAuthentication(clientId, clientSecret, GeneratorHelper.TECHNICAL_PREVIEW_APIMODE),
-				doNotValidateCertificate ? new GoogleHttpClientWrapper(server) : null).sharedSpace(sharedSpace).workSpace(workSpace).Server(server).build();
+		final Octane.OctaneCustomSettings octaneCustomSettings = new Octane.OctaneCustomSettings();
+		octaneCustomSettings.set(Octane.OctaneCustomSettings.Setting.TRUST_ALL_CERTS, doNotValidateCertificate);
+		final Octane octanePrivate = new Octane.Builder(new SimpleClientAuthentication(clientId, clientSecret, GeneratorHelper.TECHNICAL_PREVIEW_APIMODE), null)
+				.sharedSpace(sharedSpace)
+				.workSpace(workSpace)
+				.Server(server)
+				.settings(octaneCustomSettings)
+				.build();
 		final EntityMetadata work_items_root = octanePrivate.metadata().entities("work_item_root").execute().iterator().next();
 		final Collection<FieldMetadata> work_items_rootFields = octanePrivate.metadata().fields("work_item_root").execute();
 
 		octanePrivate.signOut();
 
 		final Octane octane = new Octane.Builder(
-				new SimpleClientAuthentication(clientId, clientSecret, techPreview ? GeneratorHelper.TECHNICAL_PREVIEW_APIMODE : null),
-				doNotValidateCertificate ? new GoogleHttpClientWrapper(server) : null).sharedSpace(sharedSpace).workSpace(workSpace).Server(server).build();
+				new SimpleClientAuthentication(clientId, clientSecret, techPreview ? GeneratorHelper.TECHNICAL_PREVIEW_APIMODE : null), null)
+						.sharedSpace(sharedSpace)
+						.workSpace(workSpace)
+						.Server(server)
+						.settings(octaneCustomSettings)
+						.build();
 		final Metadata metadata = octane.metadata();
 		final Collection<EntityMetadata> entityMetadata = metadata.entities().execute();
 		entityMetadata.add(work_items_root);

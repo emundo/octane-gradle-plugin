@@ -35,7 +35,7 @@ repositories {
     mavenLocal()
 }
 
-def sdkVersion = "15.1.40"
+def sdkVersion = "15.1.60"
 
 if (project.hasProperty("octaneSdkVersion")) {
     sdkVersion = octaneSdkVersion
